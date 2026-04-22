@@ -32,7 +32,69 @@
     <title>Boutique Ado {% block extra_title %}{% endblock %}</title>
   </head>
   <body>
-    <header class="container-fluid fixed-top"></header>
+    <header class="container-fluid fixed-top">
+        <div class="row">                           <!-- a single row with three columns, stacked vertically on everything except large and extra-large screens -->
+            <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center text-lg-left">  <!-- the logo should be centred by default but left-aligned on large and extra-large screens -->
+                <a href="{% url 'home' %}" class="nav-link main-logo-link">  <!-- content -->
+                    <h2 class="logo-font text-black my-0"><strong>Boutique</strong> Ado</h2>
+                </a>
+            </div>                                                      
+            <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">
+                <form method="GET" action="">  <!-- search form -->
+                    <div class="input-group w-100">  <!-- with text input named q for query -->
+                        <input class="form-control border border-black rounded-0" type="text" name="q"   
+                            placeholder="Search our site">
+                        <div class="input-group-append">  <!-- button attached to the text input using the input group append class from bootstrap -->
+                            <button class="form-control btn btn-black border border-black rounded-0" type="submit">
+                                <span class="icon">
+                                    <i class="fas fa-search"></i>  <!-- search icon from font awesome -->
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">  <!-- my-auto py-1 py-large-0 for a bit of top and bottom padding on smaller screens -->
+                <ul class="list-inline list-unstyled text-center text-lg-right my-0">  <!-- account and shopping bag links -->
+                    <li class="list-inline-item dropdown">  <!-- first list item will be a drop-down -->
+                        <a class="text-black nav-link" href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            <div class="text-center">
+                                <div><i class="fas fa-user fa-lg"></i></div>  <!-- font awesome user icon -->
+                                <p class="my-0">My Account</p>  <!-- my account text in a paragraph -->
+                            </div>
+                        </a>
+                        <div class="dropdown-menu border-0" aria-labelledby="user-options">  <!-- the menu uses several Django template tags, as below -->
+                            {% if request.user.is_authenticated %}  <!--provides authenticated superuser with the link to manage the store by adding, updating, or deleting product -->
+                                {% if request.user.is_superuser %}
+                                    <a href="" class="dropdown-item">Product Management</a>
+                                {% endif %}
+                                <a href="" class="dropdown-item">My Profile</a>
+                                <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
+                            {% else %}
+                                <a href="{% url 'account_signup' %}" class="dropdown-item">Register</a>  <!-- options to log in or register if they don't have an account -->
+                                <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>  <!-- Allauth URLs - logout, signup, login -->
+                            {% endif %}                                                
+                        </div>
+                    </li>  
+                    <li class="list-inline-item">  <!-- bootstrap list classes, used to align the lists horizontally with no bullets -->
+                        <a class="{% if grand_total %}text-info font-weight-bold{% else %}text-black{% endif %} nav-link" href="">
+                            <div class="text-center">
+                                <div><i class="fas fa-shopping-bag fa-lg"></i></div>  <!-- Django template logic - if there's something in the bag, the font will be bold and a different colour -->
+                                <p class="my-0">
+                                    {% if grand_total %}
+                                        ${{ grand_total|floatformat:2 }}
+                                    {% else %}
+                                        $0.00
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </a>
+                    </li>  
+                </ul>
+            </div>  
+        </div>    
+    </header>
 
     {% if messages %}
         <div class="message-container"></div>
