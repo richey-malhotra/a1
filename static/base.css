@@ -10,23 +10,23 @@ body {
     font-family: 'Lato';
 }
 
-/* from Bulma */
+/* from Bulma */    /* ensures font awesome icons stay put in the centre of the page unless we manually change it */
 .icon {
     align-items: center;
     display: inline-flex;
     justify-content: center;
     height: 1.5rem;
     width: 1.5rem;
-}
+}       
 
 .logo-font {
     text-transform: uppercase;
 }
-
+/* makes it so that the logo only takes up as much space as the text requires and no more */
 .main-logo-link {
     width: fit-content;
 }
-
+/* styling for buttons so that they match the theme of the shop now button on the homepage */
 .shop-now-button {
     background: black;
     color: white;
@@ -47,7 +47,7 @@ body {
     background: #222;
     color: white;
 }
-
+/* allows both primary and secondary call-to-action styling on all site buttons for consistent user experience */
 .text-black {
     color: #000 !important;
 }
@@ -58,14 +58,14 @@ body {
 
 /* -------------------------------- Media Queries */
 
-/* Slightly larger container on xl screens */
+/* Slightly larger container on xl screens */  /* widens the default bootstrap container class on extra-large screens */
 @media (min-width: 1200px) {
   .container {
     max-width: 80%;
   }
 }
 
-/* fixed top navbar only on medium and up */
+/* fixed top navbar only on medium and up */  /* minimum 992 pixels screen width to distinguish from mobile views */
 @media (min-width: 992px) {
     .fixed-top-desktop-only {
         position: fixed;
@@ -74,7 +74,7 @@ body {
         left: 0;
         z-index: 1030;
     }
-
+/* 164 pixels of padding added to our header container class to push the body down to the bottom of the main page header */
     .header-container {
         padding-top: 164px;
     }
