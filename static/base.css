@@ -55,6 +55,10 @@ body {
 .border-black {
     border: 1px solid black !important;
 }
+/* black background for the delivery banner */ 
+.bg-black {
+    background: #000 !important;
+}
 
 /* -------------------------------- Media Queries */
 
