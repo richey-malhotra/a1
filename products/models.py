@@ -2,8 +2,12 @@ from django.db import models
 
 # Create your models here.
 class Category(models.Model):
+
+    class Meta:
+        verbose_name_plural = 'Categories'  # fixes the spelling issue on the category and any model 
+
     name = models.CharField(max_length=254)
-    friendly_name = models.CharField(max_length=254, null=True, blank=True)
+    friendly_name = models.CharField(max_length=254, null=True, blank=True)  # null equals true and blank equals true so that the friendly name is optional
 
     def __str__(self):
         return self.name
