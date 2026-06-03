@@ -5,15 +5,27 @@ These instructions are written for **Windows**.
 
 ## Requirements
 
-Use **Python 3.9 or 3.10**. This project is built on Django 3.2, which does not
-support Python 3.11 or newer. Check your version first:
+This project is built on Django 3.2, which **only runs on Python 3.9 or 3.10**.
+It will **not** work on Python 3.11, 3.12 or newer.
+
+Check what you have:
 
 ```powershell
 python --version
 ```
 
-If it reports 3.11 or higher, install Python 3.10 from <https://www.python.org/downloads/>
-before continuing, then create the virtual environment below with `py -3.10 -m venv .venv`.
+If that shows 3.11 or higher (for example 3.12), install **Python 3.10** before
+continuing:
+
+1. Download the Python 3.10 Windows installer from
+   <https://www.python.org/downloads/release/python-31011/> (scroll to
+   "Windows installer (64-bit)").
+2. Run it. You do **not** need to uninstall your existing Python - both versions
+   can sit side by side.
+
+You do not type `python3.10` anywhere. Windows installs a launcher called `py`, and you
+pick the version with `py -3.10`. The steps below use `py -3.10` to build the virtual
+environment, so everything after that automatically runs on Python 3.10.
 
 ## Running locally
 
@@ -22,11 +34,16 @@ Open PowerShell and run:
 ```powershell
 git clone https://github.com/richey-malhotra/a1.git
 cd a1
-python -m venv .venv
+py -3.10 -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
 copy env.py.example env.py
 ```
+
+Once the environment is activated, `python --version` should report **3.10.x**. That
+confirms the virtual environment is using the right Python (even if your system default
+is 3.12). If it still shows 3.12, close the terminal, delete the `.venv` folder, and
+redo the `py -3.10 -m venv .venv` step.
 
 Generate a secret key:
 
