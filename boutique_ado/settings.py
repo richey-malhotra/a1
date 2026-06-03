@@ -12,20 +12,30 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load local env.py if present (gitignored). Lets us set SECRET_KEY,
+# DEVELOPMENT, DATABASE_URL, etc. for local dev without committing secrets.
+if os.path.isfile(os.path.join(BASE_DIR, 'env.py')):
+    import env  # noqa: F401
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6y$$43ar@!-!1(%1u500ba4$mb0*h9s686b)8py**k(ql_!r=n'
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'django-insecure-6y$$43ar@!-!1(%1u500ba4$mb0*h9s686b)8py**k(ql_!r=n',
+)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG is True locally if DEVELOPMENT is set in the env, False on Heroku.
+DEBUG = 'DEVELOPMENT' in os.environ
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.herokuapp.com']
 
 
 # Application definition
@@ -47,6 +57,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -69,6 +80,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',  # required by allauth
+                'django.template.context_processors.media',  # makes {{ MEDIA_URL }} available (noimage fallback)
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -102,12 +114,18 @@ WSGI_APPLICATION = 'boutique_ado.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Use DATABASE_URL (Heroku Postgres) when set, otherwise fall back to SQLite.
+if 'DATABASE_URL' in os.environ:
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ['DATABASE_URL']),
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -147,9 +165,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)  # tells Django where all of our static files are located - project level static folder here 
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # collectstatic target
 
-MEDIA_URL = '/media/'                                   # where all uploaded media files will go
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
