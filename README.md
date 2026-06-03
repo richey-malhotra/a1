@@ -85,12 +85,65 @@ python manage.py runserver
 
 ## Deploying to Heroku
 
+You need a free [Heroku](https://www.heroku.com/) account and the
+[Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) installed, then run
+`heroku login` once.
+
+### Step 1: Create your app and pick its name
+
+Everywhere below you see `<appname>`, replace it with **the name of YOUR app** - the
+name you choose right now in this step. It is not a fixed value; you invent it.
+
+```bash
+heroku create your-app-name-here
+```
+
+Rules for the name:
+
+- It must be **unique across all of Heroku**, because it becomes your website address:
+  `https://your-app-name-here.herokuapp.com`. If the name is already taken, Heroku will
+  tell you - just try another.
+- Use **lowercase letters, numbers and dashes only**, and start with a letter.
+  For example `boutique-ado-jane` is fine; `Boutique_Ado!` is not.
+
+If you would rather let Heroku invent a name for you, just run `heroku create` with no
+name. It will print the name it chose - use that as your `<appname>` from then on.
+
+Running `heroku create` inside this repo also adds a git remote called `heroku`, which
+is what `git push heroku main` below pushes to.
+
+### Step 2: Deploy
+
+Replace **every** `<appname>` in these commands with the name from Step 1:
+
 ```bash
 heroku config:set SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(50))')" --app <appname>
 git push heroku main
 heroku run python manage.py migrate --app <appname>
 heroku run python manage.py loaddata categories products --app <appname>
 ```
+
+So if your app is called `boutique-ado-jane`, the first line is literally:
+
+```bash
+heroku config:set SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(50))')" --app boutique-ado-jane
+```
+
+### Step 3: Open it
+
+```bash
+heroku open --app <appname>
+```
+
+Or just visit `https://<appname>.herokuapp.com` in your browser.
+
+> **Windows note:** the `$(python -c ...)` part is a macOS/Linux shortcut for generating
+> the secret key inline. On Windows PowerShell, generate it separately and paste it in:
+>
+> ```powershell
+> python -c "import secrets; print(secrets.token_urlsafe(50))"
+> heroku config:set SECRET_KEY="paste-the-key-here" --app <appname>
+> ```
 
 `DEBUG` is on locally (set by `env.py`) and off on Heroku. Static files are served by
 WhiteNoise and `collectstatic` runs during the build, so no extra setup is needed.
