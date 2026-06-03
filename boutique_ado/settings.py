@@ -27,10 +27,7 @@ if os.path.isfile(os.path.join(BASE_DIR, 'env.py')):
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get(
-    'SECRET_KEY',
-    'django-insecure-6y$$43ar@!-!1(%1u500ba4$mb0*h9s686b)8py**k(ql_!r=n',
-)
+SECRET_KEY = os.environ.get('SECRET_KEY', 'set-your-own-secret-key-in-env-py')
 
 # DEBUG is True locally if DEVELOPMENT is set in the env, False on Heroku.
 DEBUG = 'DEVELOPMENT' in os.environ
