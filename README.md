@@ -2,38 +2,86 @@
 
 A Django shopping site. Runs locally on SQLite and deploys to Heroku.
 
-## Running locally
+## Requirements
 
-Clone the repo, then from the project root:
+Use **Python 3.9 or 3.10**. This project is built on Django 3.2, which does not
+support Python 3.11 or newer. Check your version first:
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
+python --version
+```
+
+If it reports 3.11 or higher, install Python 3.10 from <https://www.python.org/downloads/>
+before continuing (on Windows you can then create the venv with `py -3.10 -m venv .venv`).
+
+## Running locally (Windows)
+
+Open PowerShell and run:
+
+```powershell
+git clone https://github.com/richey-malhotra/a1.git
+cd a1
+python -m venv .venv
+.venv\Scripts\activate
 pip install -r requirements.txt
+copy env.py.example env.py
 ```
 
-Create your `env.py` from the example (it's gitignored, so your secrets stay out of git):
+Generate a secret key:
 
-```bash
-cp env.py.example env.py
-```
-
-Open `env.py` and set your own `SECRET_KEY`. Generate one with:
-
-```bash
+```powershell
 python -c "import secrets; print(secrets.token_urlsafe(50))"
 ```
 
-Set up the database and load the sample products:
+Open `env.py` and paste that value into `SECRET_KEY`. Then set up the database and run:
 
-```bash
+```powershell
 python manage.py migrate
 python manage.py loaddata categories products
-python manage.py createsuperuser   # optional, for /admin
+python manage.py createsuperuser
 python manage.py runserver
 ```
 
-Then open <http://127.0.0.1:8000/> - the product grid is at `/products/`.
+Open <http://127.0.0.1:8000/> - the product grid is at `/products/`.
+
+If PowerShell blocks `.venv\Scripts\activate` with a "running scripts is disabled"
+error, run this once and try again:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
+Or use Command Prompt instead, where `.venv\Scripts\activate.bat` always works.
+
+## Running locally (macOS / Linux)
+
+```bash
+git clone https://github.com/richey-malhotra/a1.git
+cd a1
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp env.py.example env.py
+```
+
+Generate a secret key, paste it into `SECRET_KEY` in `env.py`, then:
+
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(50))"
+python manage.py migrate
+python manage.py loaddata categories products
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+## Notes
+
+- `createsuperuser` is optional - it just lets you log into `/admin`.
+- Do not skip `env.py`. It sets `DEVELOPMENT`, which turns on `DEBUG` for local work.
+  Without it the site runs in production mode and the styling will not load under
+  `runserver`.
+- The product images live in the repo under `media/`, so they appear straight away.
+  Only the product data is loaded by `loaddata`.
 
 ## Deploying to Heroku
 
