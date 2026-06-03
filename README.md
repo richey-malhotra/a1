@@ -1,7 +1,30 @@
 # boutique_ado_v1
 
 A Django shopping site. Runs locally on SQLite and deploys to Heroku.
-These instructions are written for **Windows**.
+
+## Quickest start: GitHub Codespaces (recommended)
+
+No Python install, no version juggling, no permissions hassle — everything
+runs in a pre-configured cloud container. Works the same on any computer.
+
+1. On the GitHub repo page, click **Code → Codespaces → Create codespace on main**.
+2. Wait ~1 minute for it to build. It automatically installs dependencies,
+   creates `env.py` with a fresh secret key, and runs the database migrations.
+3. In the terminal, run:
+
+   ```bash
+   python manage.py runserver
+   ```
+
+4. When VS Code pops up "Open in Browser" for port 8000, click it.
+
+That's it — the site is running. (Free monthly Codespaces hours are included
+with every GitHub account, and **GitHub Education** gives students more.)
+
+---
+
+The rest of this README covers running the project **locally on Windows**, if
+you prefer that over Codespaces.
 
 ## Requirements
 

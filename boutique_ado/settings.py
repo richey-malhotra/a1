@@ -34,6 +34,12 @@ DEBUG = 'DEVELOPMENT' in os.environ
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.herokuapp.com']
 
+# GitHub Codespaces serves the dev server through a forwarded *.app.github.dev
+# URL, so the Host/Referer must be trusted for pages and CSRF-protected forms.
+if os.environ.get('CODESPACES') == 'true':
+    ALLOWED_HOSTS.append('.app.github.dev')
+    CSRF_TRUSTED_ORIGINS = ['.app.github.dev']
+
 
 # Application definition
 
