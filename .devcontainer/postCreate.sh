@@ -25,6 +25,9 @@ fi
 echo "==> Applying database migrations..."
 python manage.py migrate --noinput
 
+echo "==> Loading sample data (categories, then products)..."
+python manage.py loaddata categories products
+
 echo ""
 echo "============================================================"
 echo " Setup complete. Start the site with:"
