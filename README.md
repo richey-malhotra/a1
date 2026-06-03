@@ -1,20 +1,21 @@
 # boutique_ado_v1
 
 A Django shopping site. Runs locally on SQLite and deploys to Heroku.
+These instructions are written for **Windows**.
 
 ## Requirements
 
 Use **Python 3.9 or 3.10**. This project is built on Django 3.2, which does not
 support Python 3.11 or newer. Check your version first:
 
-```bash
+```powershell
 python --version
 ```
 
 If it reports 3.11 or higher, install Python 3.10 from <https://www.python.org/downloads/>
-before continuing (on Windows you can then create the venv with `py -3.10 -m venv .venv`).
+before continuing, then create the virtual environment below with `py -3.10 -m venv .venv`.
 
-## Running locally (Windows)
+## Running locally
 
 Open PowerShell and run:
 
@@ -33,7 +34,8 @@ Generate a secret key:
 python -c "import secrets; print(secrets.token_urlsafe(50))"
 ```
 
-Open `env.py` and paste that value into `SECRET_KEY`. Then set up the database and run:
+Open `env.py` (for example with `notepad env.py`) and paste that value into
+`SECRET_KEY`, then save. Now set up the database and run the site:
 
 ```powershell
 python manage.py migrate
@@ -52,27 +54,6 @@ Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 ```
 
 Or use Command Prompt instead, where `.venv\Scripts\activate.bat` always works.
-
-## Running locally (macOS / Linux)
-
-```bash
-git clone https://github.com/richey-malhotra/a1.git
-cd a1
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp env.py.example env.py
-```
-
-Generate a secret key, paste it into `SECRET_KEY` in `env.py`, then:
-
-```bash
-python -c "import secrets; print(secrets.token_urlsafe(50))"
-python manage.py migrate
-python manage.py loaddata categories products
-python manage.py createsuperuser
-python manage.py runserver
-```
 
 ## Notes
 
@@ -94,7 +75,7 @@ You need a free [Heroku](https://www.heroku.com/) account and the
 Everywhere below you see `<appname>`, replace it with **the name of YOUR app** - the
 name you choose right now in this step. It is not a fixed value; you invent it.
 
-```bash
+```powershell
 heroku create your-app-name-here
 ```
 
@@ -112,38 +93,30 @@ name. It will print the name it chose - use that as your `<appname>` from then o
 Running `heroku create` inside this repo also adds a git remote called `heroku`, which
 is what `git push heroku main` below pushes to.
 
-### Step 2: Deploy
+### Step 2: Set the secret key
 
-Replace **every** `<appname>` in these commands with the name from Step 1:
+Generate a key and set it on your app (replace `<appname>` with the name from Step 1):
 
-```bash
-heroku config:set SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(50))')" --app <appname>
+```powershell
+python -c "import secrets; print(secrets.token_urlsafe(50))"
+heroku config:set SECRET_KEY="paste-the-key-here" --app <appname>
+```
+
+### Step 3: Deploy and set up the database
+
+```powershell
 git push heroku main
 heroku run python manage.py migrate --app <appname>
 heroku run python manage.py loaddata categories products --app <appname>
 ```
 
-So if your app is called `boutique-ado-jane`, the first line is literally:
+### Step 4: Open it
 
-```bash
-heroku config:set SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(50))')" --app boutique-ado-jane
-```
-
-### Step 3: Open it
-
-```bash
+```powershell
 heroku open --app <appname>
 ```
 
 Or just visit `https://<appname>.herokuapp.com` in your browser.
-
-> **Windows note:** the `$(python -c ...)` part is a macOS/Linux shortcut for generating
-> the secret key inline. On Windows PowerShell, generate it separately and paste it in:
->
-> ```powershell
-> python -c "import secrets; print(secrets.token_urlsafe(50))"
-> heroku config:set SECRET_KEY="paste-the-key-here" --app <appname>
-> ```
 
 `DEBUG` is on locally (set by `env.py`) and off on Heroku. Static files are served by
 WhiteNoise and `collectstatic` runs during the build, so no extra setup is needed.
