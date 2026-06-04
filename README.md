@@ -2,6 +2,19 @@
 
 A Django shopping site. Runs locally on SQLite and deploys to Heroku.
 
+## Get your own copy (start here)
+
+This repo is a **template**, so you create your own independent copy in one click —
+no fork link, no shared history.
+
+1. On the GitHub repo page, click the green **Use this template** button →
+   **Create a new repository**.
+2. Give it a name, choose your own account as the owner, and click
+   **Create repository**.
+
+That new repository is yours. Everything below — Codespaces, local setup, Heroku —
+runs from **your** copy.
+
 ## Quickest start: GitHub Codespaces (recommended)
 
 No Python install, no version juggling, no permissions hassle — everything
@@ -20,6 +33,10 @@ runs in a pre-configured cloud container. Works the same on any computer.
 
 That's it — the site is running. (Free monthly Codespaces hours are included
 with every GitHub account, and **GitHub Education** gives students more.)
+
+**If the product images show as blank spaces:** the forwarded port is set to
+*Private*, which blocks the image requests. In the **Ports** panel, right-click
+port **8000** → *Port Visibility* → **Public**, then reload the page.
 
 ---
 
